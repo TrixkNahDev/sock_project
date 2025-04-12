@@ -1,0 +1,34 @@
+global:
+    registry: ''
+
+istio:
+    enabled: false
+
+frontend:
+    replicas: 1
+    image:
+        repo: socksshop/front-end
+        tag: latest
+    resources:
+        limits:
+            cpu: 300m
+            memory: 1000Mi
+        requests:
+            cpu: 100m
+            memory: 300Mi
+
+# ingress:
+#     labels: {}
+#     ingressClassName: nginx
+#     host: sockshop.ip-ddns.com
+#     tlsSecretName: ''
+#     # annotations:
+#     #     cert-manager.io/cluster-issuer: "letsencrypt-prod"  # Si vous utilisez cert-manager
+
+ingress:
+    labels: {}
+    ingressClassName: alb
+    host: www.datascientets-socks-shop.com                 # ← remplace par ton domaine réel
+    albArn: arn:aws:elasticloadbalancing:us-east-1:471744311643:loadbalancer/app/socks-shop-lb/8343a8099783e9d0  # ← sortie Terraform
+    certificateArn: arn:aws:acm:us-east-1:471744311643:certificate/a230a5d9-f1c9-4e21-b87e-4ad4ec11901e      # ← ton ACM cert ARN
+    #groupName: socks-shop-frontend             # ← facultatif mais utile si plusieurs ingresses
